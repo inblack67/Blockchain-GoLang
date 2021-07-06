@@ -7,10 +7,14 @@ import (
 )
 
 func main() {
-	blockChain := blockchain.InitBlockchain()
-	blockChain.AddBlock("hello")
-	blockChain.AddBlock("worlds")
-	for _, v := range blockChain.Blocks {
-		fmt.Println(v.Hash)
+	chain := blockchain.InitBlockchain()
+	chain.AddBlock("hello")
+	chain.AddBlock("worlds")
+	for _, v := range chain.Blocks {
+		fmt.Printf("%x \n", v.PrevHash)
+		fmt.Printf("%s \n", v.Data)
+		fmt.Printf("%x \n", v.Hash)
+		pow := blockchain.NewProof(v)
+		fmt.Println("POW: ", pow.Validate())
 	}
 }
