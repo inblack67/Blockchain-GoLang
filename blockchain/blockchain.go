@@ -1,6 +1,8 @@
 package blockchain
 
 import (
+	"fmt"
+
 	"github.com/dgraph-io/badger/v3"
 )
 
@@ -60,8 +62,14 @@ func InitBlockchain() *BlockChain {
 	HandleError(err)
 	err = db.Update(func(txn *badger.Txn) error {
 		if _, err := txn.Get([]byte(LastHash)); err == badger.ErrKeyNotFound {
+
+			fmt.Println("No existing blockchain found")
+
 			// no blockchain exists yet
 			genesis := Genesis()
+
+			fmt.Println("Genesis proved")
+
 			err = txn.Set(genesis.Hash, genesis.Serialize())
 			HandleError(err)
 			err = txn.Set([]byte(LastHash), genesis.Hash)
@@ -91,12 +99,11 @@ func (iterator *BlockChainIterator) Next() *Block {
 	err := iterator.Database.View(func(txn *badger.Txn) error {
 		item, err := txn.Get(iterator.CurrentHash)
 		HandleError(err)
-		var encodedBlock []byte
 		err = item.Value(func(val []byte) error {
-			encodedBlock = val
+			fmt.Println("====")
+			block = DeSerialize(val)
 			return nil
 		})
-		block = DeSerialize(encodedBlock)
 		return err
 	})
 	HandleError(err)
