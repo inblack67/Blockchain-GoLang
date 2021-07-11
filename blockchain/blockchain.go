@@ -6,6 +6,11 @@ import (
 	"github.com/dgraph-io/badger/v3"
 )
 
+// - Public database that is distributed across multiple different peers.
+// - Does not rely on trust
+// - 49% nodes => corrupted data => db will be able to fix itself
+// - Composed of blocks => each block contains the data we want to pass around the db as well a hash
+
 // store blockchain data
 //  two entities => blocks (stored with metadata, which describes all the blocks of the chain) and chainState object => stores the state of A chain as unspent transactions, and some metadata,
 // with bitcoin => each block has seperate file on the disk => not necessary for smaller blockchain
