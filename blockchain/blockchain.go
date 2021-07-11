@@ -107,5 +107,6 @@ func (iterator *BlockChainIterator) Next() *Block {
 		return err
 	})
 	HandleError(err)
+	iterator.CurrentHash = block.PrevHash
 	return block
 }

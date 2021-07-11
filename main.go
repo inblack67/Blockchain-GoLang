@@ -41,7 +41,8 @@ func (cli *CommandLine) printChain() {
 		// fmt.Printf("%x \n", block.Hash)
 		pow := blockchain.NewProof(block)
 		fmt.Println("POW: ", pow.Validate())
-		if string(block.PrevHash) == "" {
+		blockName := string(block.Data)
+		if blockName == "Genesis" {
 			// genesis block has it's prevHash as empty string
 			break
 		}
